@@ -16,25 +16,25 @@ class Bank(object):
             return False
         except ValueError:
             pass
-        if len(dir(new_account)) % 2:
+        if len(new_account) % 2:
             return False
         
         is_zip_or_addr:bool = False
         is_info:int = 0
-        for att in new_account:
-            if str(att).startwith("b"):
+        for att in new_account.__dir__():
+            if att.startwith("b"):
                 return False
-            if str(att) == "zip" or str(att) == "addr":
+            if att == "zip" or att == "addr":
                 is_zip_or_addr = True
-            if str(att) == "name" or "id" or "value":
-                if str(att) == "name":
+            if att == "name" or "id" or "value":
+                if att == "name":
                     if isinstance(att, str) == False:
                         return False
                 elif att == "id":
-                    if isinstance(att, int) == False:
+                    if isinstance(getattr(new_account, att), int) == False:
                         return False
                 elif att == "value":
-                    if isinstance(att, int) == False and isinstance(att, float) == False:
+                    if isinstance(getattr(new_account, att), int) == False and isinstance(getattr(new_account, att), float) == False:
                         return False
                 is_info += 1 
         if is_zip_or_addr == False:
@@ -61,8 +61,9 @@ class Bank(object):
             return True
         if (amount < 0):
             return False
-        if amount > origin.value:
+        if amount > getattr(origin, "value"):
             return False
+        dest.__dir__()
 
 
     def fix_account(self, name:str):
