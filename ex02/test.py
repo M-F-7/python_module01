@@ -1,34 +1,34 @@
 from vector import Vector
 
 
-# # Column vector of shape n * 1
-v1 = Vector([[0.0], [1.0], [2.0], [3.0]])
-v2 = v1 * 5
-print(v2)
-# Expected output:
-# Vector([[0.0], [5.0], [10.0], [15.0]])
-# Row vector of shape 1 * n
+# # # Column vector of shape n * 1
+# v1 = Vector([[0.0], [1.0], [2.0], [3.0]])
+# v2 = v1 * 5
+# print(v2)
+# # Expected output:
+# # Vector([[0.0], [5.0], [10.0], [15.0]])
+# # Row vector of shape 1 * n
 
-v1 = Vector([[0.0, 1.0, 2.0, 3.0]])
-v2 = v1 * 5
-print(v2)
-# Expected output
-# Vector([[0.0, 5.0, 10.0, 15.0]])
-v2 = v1 / 2.0
-print(v2)
-# Expected output
-# Vector([[0.0, 0.5, 1.0, 1.5]])
-try:
-    v1 / 0.0
-except ZeroDivisionError as e:
-    print(e)
+# v1 = Vector([[0.0, 1.0, 2.0, 3.0]])
+# v2 = v1 * 5
+# print(v2)
+# # Expected output
+# # Vector([[0.0, 5.0, 10.0, 15.0]])
+# v2 = v1 / 2.0
+# print(v2)
+# # Expected output
+# # Vector([[0.0, 0.5, 1.0, 1.5]])
+# try:
+#     v1 / 0.0
+# except ZeroDivisionError as e:
+#     print(e)
 
-# Expected ouput
-# ZeroDivisionError: division by zero.
-try:
-    2.0 / v1
-except ArithmeticError as e:
-    print(e)
+# # Expected ouput
+# # ZeroDivisionError: division by zero.
+# try:
+#     2.0 / v1
+# except ArithmeticError as e:
+#     print(e)
 
 # print(v1)
 # print(v2)
@@ -107,3 +107,21 @@ except ArithmeticError as e:
 # print(v1)
 # Expected output: to see what __str__() should do
 # [[0.0, 1.0, 2.0, 3.0]]
+
+
+
+v1 = Vector([[0.0, 1.0, 2.0, 3.0]])
+
+v2 = Vector([[0.0], [1.0], [2.0], [3.0]])
+
+v3 = Vector(3)
+
+try:
+    v4 = Vector((10,16))
+except ValueError as e:
+    print(e)
+
+print(v1)
+print(v2)
+print(v3)
+print(v4)

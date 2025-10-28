@@ -1,3 +1,4 @@
+from errno import ESTALE
 from numpy import transpose
 from numpy import shape
 
@@ -6,9 +7,18 @@ class Vector:
     # __shape:tuple[int, int]
 
     def __init__(self, values):
-        self.__values = values
+        if isinstance(values, tuple):
+            start, stop = values
+            if start >= stop:
+                raise ValueError("start must be less than stop")
+            self.__values = [[float(i)] for i in range(start, stop)]
+        elif (isinstance(values, int)):
+            self.__values = ([[float(i)] for i in range(values)])
+        elif isinstance(values, list):
+            self.__values = values
+        else:
+            raise TypeError("Cannot initializer with this type")
         self.__shape = len(self.__values), len(self.__values[0])
-        #self.__shape = shape(self.__values)
 
     def __str__(self)->str:
         txt:str = "Vector: "
@@ -20,19 +30,43 @@ class Vector:
 
 
     def __add__(self, other):
+        if not isinstance(other, Vector):
+            raise TypeError("Can only add Vector to Vector")
+
+        if self.__shape != other.__shape:
+            raise ValueError("Vectors must have the same shape")
+        
+
         tab:list[list[float]] = []
         for y, y2 in zip(self.__values, other.__values):
             new_row:list[float] = [x + x2 for x, x2 in zip(y, y2)]
             tab.append(new_row)
         return Vector(tab)
+    
+    def __radd__(self, other):
+        return self.__add__(other)
 
     def __sub__(self, other):
+        if not isinstance(other, Vector):
+            raise TypeError("Can only add Vector to Vector")
+
+        if self.__shape != other.__shape:
+            raise ValueError("Vectors must have the same shape")
+        
+
         tab:list[list[float]] = []
         for y, y2 in zip(self.__values, other.__values):
             new_row:list[float] = [x - x2 for x, x2 in zip(y, y2)]
             tab.append(new_row)
         return Vector(tab)
+    
 
+    def __rsub__(self, other):
+        return self.__sub__(other)
+
+    def __mul__(self, other):
+        raise NotImplementedError("Mul without an int is not implemented")
+    
     def __mul__( self, nb:int ):
         tab:list[list[float]] = []
         for y in self.__values:
@@ -53,6 +87,8 @@ class Vector:
             tab.append(new_row)
         return Vector(tab)
 
+    def __rtruediv__(self, other):
+        raise NotImplementedError("Division of a scalar by a Vector is not defined here.")
     def __rtruediv__(self, nb:float):
         raise ArithmeticError("Division of a scalar by a Vector is not defined here.")
     
