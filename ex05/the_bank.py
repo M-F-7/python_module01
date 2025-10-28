@@ -33,31 +33,6 @@ class Bank(object):
             return False
         except ValueError:
             pass
-        if len((new_account.__dir__())) % 2:
-            return False
-        
-        is_zip_or_addr:bool = False
-        is_info:int = 0
-        for att in new_account.__dir__():
-            if att.startswith("b"):
-                return False
-            if att == "zip" or att == "addr":
-                is_zip_or_addr = True
-            if att in ("name", "id", "value"):
-                if att == "name":
-                    if isinstance(att, str) == False:
-                        return False
-                elif att == "id":
-                    if isinstance(getattr(new_account, att), int) == False:
-                        return False
-                elif att == "value":
-                    if isinstance(getattr(new_account, att), int) == False and isinstance(getattr(new_account, att), float) == False:
-                        return False
-                is_info += 1 
-        if is_zip_or_addr == False:
-            return False
-        if is_info != 3:
-            return False
         self.accounts.append(new_account)
         return True
 
@@ -74,18 +49,47 @@ class Bank(object):
             return False
         if isinstance(dest, str) == False:
             return False
-        if origin == dest:
-            return True
+
         if (amount < 0):
             return False
         
         ori_acc = next((acc for acc in self.accounts if acc.name == origin), None)
         dest_acc = next((acc for acc in self.accounts if acc.name == dest), None)
-    
+
         if ori_acc == None or dest_acc == None:
             return False
+        for new_account in [ori_acc, dest_acc]:
+            if len((new_account.__dir__())) % 2:
+                return False
+            
+            is_zip_or_addr:bool = False
+            is_info:int = 0
+            for att in new_account.__dir__():
+                if att.startswith("b"):
+                    return False
+                if att == "zip" or att == "addr":
+                    is_zip_or_addr = True
+                if att in ("name", "id", "value"):
+                    if att == "name":
+                        if isinstance(att, str) == False:
+                            return False
+                    elif att == "id":
+                        if isinstance(getattr(new_account, att), int) == False:
+                            return False
+                    elif att == "value":
+                        if isinstance(getattr(new_account, att), int) == False and isinstance(getattr(new_account, att), float) == False:
+                            return False
+                    is_info += 1 
+            if is_zip_or_addr == False:
+                return False
+            if is_info != 3:
+                return False
+    
         if amount > ori_acc.value:
             return False
+        
+        if origin == dest:
+            return True
         
         ori_acc.value -= amount
         dest_acc.value += amount
@@ -103,9 +107,8 @@ class Bank(object):
             return False
         atts = corr_account.__dir__()
 
-        # if len(atts) % 2:
-        #     setattr(corr_account, "Length", "Even")
-        #     print(corr_account.__dir__())
+        if len(atts) % 2:
+            setattr(corr_account, "Length", "Even")
         for att in atts:
             if att.startswith("b") and hasattr(corr_account, att):
                 delattr(corr_account, att)
@@ -138,16 +141,3 @@ class Bank(object):
                 except Exception:
                     print("Cannot set the value attribut to an int/float")
         return True
-
-    
-
-    #print([name for name in dir(math) if not name.startswith("__")])
-    
-    # //The verification in add only checsk the type of the
-# new_account and if there is no account among the ones already in Bank instance with
-# the same name.
-# A transaction is invalid if amount < 0 or if the amount is larger than the balance of
-# the account
-# A transfer between the same account
-# (bank.transfer(’Wiliam John’, ’William John’)) is valid but there is no fund move-
-# ment
