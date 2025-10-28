@@ -22,6 +22,14 @@ if __name__ == "__main__":
         bank.fix_account('William John')
         bank.fix_account('Smith Jane')
 
+    # bank.add(Account(
+    #     'Smith Jane',
+    #     zip='911-745',
+    #     value=1000.0,
+    #     ref='1044618427ff2782f0bbece0abd05f31',
+    #     info=None
+    # ))
+    
     if bank.transfer('William John', 'Smith Jane', 1000.0) is False:
         print('Failed')
     else:
