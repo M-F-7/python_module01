@@ -1,6 +1,4 @@
 from errno import ESTALE
-from numpy import transpose
-from numpy import shape
 
 class Vector:
     # __values:list[list[float]]
@@ -105,7 +103,8 @@ class Vector:
     
 
     def T(self):
-        return transpose(self.__values)
+        transposed = list(map(list, zip(*self.__values)))
+        return Vector(transposed)
 
     def get_shape(self):
         return self.__shape
