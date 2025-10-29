@@ -1,5 +1,3 @@
-from errno import ESTALE
-
 class Vector:
     # __values:list[list[float]]
     # __shape:tuple[int, int]
